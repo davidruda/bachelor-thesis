@@ -19,7 +19,10 @@
 %   in less than 1 minute by just looking at the poster.
 
 % modify the fontscale parameter to make everything slighly bigger or smaller.
-\documentclass[portrait,a0paper,fontscale=0.25]{baposter}
+% \documentclass[portrait,a0paper,fontscale=0.25]{baposter}
+% \documentclass[portrait,a0paper,fontscale=0.26]{baposter}
+% \documentclass[portrait,a0paper,fontscale=0.27]{baposter}
+\documentclass[portrait,a0paper,fontscale=0.28]{baposter}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -74,6 +77,25 @@
 %   yellow: highlighter, brown: serious problem, violet: something really
 %   weird/interesting/magic, depending on the shade).
 
+% EXTRA PACKAGES AND DEFINITIONS I NEED
+
+\usepackage{threeparttable} % for \tnote
+\usepackage{hyperref} % for links
+\usepackage{qrcode} % for qrcode
+\usepackage{fontawesome} % for \faGithub
+% https://github.com/EagleoutIce/fancyqr
+\usepackage{fancyqr} % for fancy qrcode
+\usepackage{bm} % boldface symbols (\bm)
+\usepackage{booktabs} % for toprule, midrule etc.
+\usepackage{xcolor} % for my custom colors
+
+% Define the same colors as in my plots
+% https://www.overleaf.com/learn/latex/Using_colors_in_LaTeX#Creating_your_own_colors
+\definecolor{myblue}{RGB}{68, 117, 177}
+\definecolor{myorange}{RGB}{207, 134, 59}
+\definecolor{mygreen}{RGB}{89, 144, 65}
+\definecolor{myred}{RGB}{172, 72, 66}
+
 \begin{document}
 
 \color{black!80} % default font color
@@ -93,8 +115,8 @@
 	headerFontColor=black,
 	}%
 	{\includegraphics[height=7em]{logos/mff-black.pdf}}
-	{Thesis name goes here}
-	{\vspace{1ex} Yourname Goeshere}
+	{\vspace{-0.5ex} Traffic Signal Optimization}
+	{\vspace{1ex} {\LARGE David Ruda} \\ Supervisor: RNDr. Jiří Fink, Ph.D. \\ \vspace{0.5ex} 2025}
 	{\includegraphics[height=7em]{logos/uk-red.pdf}}
 
 
@@ -102,57 +124,51 @@
 % LEFT COLUMN
 %
 
-\begin{posterbox}[column=0,name=background]{Background}
-Describe what is the problem that your thesis addresses.
+\begin{posterbox}[column=0,name=background]
+{Problem}
+% Describe what is the problem that your thesis addresses.
+Traffic congestion is a growing issue in cities. Optimizing traffic signals is a cost-effective way to reduce delays and emissions without changing the physical infrastructure. The Google Hash Code 2021 competition introduced a simplified version of this real-world problem: \\
 
-Include a picture of the problem. Name the problem.
+\textit{Given a city plan describing \textbf{intersections}, \textbf{streets}, and \textbf{cars} with planned paths through the city, optimize \textbf{\mbox{traffic light schedules}} to
+maximize the number of cars reaching their destination before the deadline, while minimizing the overall time spent in traffic.}
 
-\begin{center}\begin{tikzpicture}[ultra thick, inner sep=1ex]
-\node[rectangle, rounded corners=1ex, draw=red!80!black, color=red!80!black, font=\huge\bfseries, rotate=21] {Problem!};
-\end{tikzpicture}\end{center}
+\begin{center}
+\includegraphics[width=1.0\linewidth]{img/figure1.png}
+\small{Example of a city plan {[Google Hash Code 2021]}.}
+\end{center}
 \end{posterbox}
 
 \begin{posterbox}[column=0, name=goals, below=background, headerColorOne=cyan!60, boxColorOne=cyan!20]{Thesis goals}
 \begin{itemize}
-\item How do you approach and address the problem?
-\item What tools do you use to address it?
-\item \dots
+\item Implement a \textbf{fast and efficient C++ simulator} for the problem and wrap it as a \textbf{Python package} for convenient use
+\item Integrate the simulator into an optimization pipeline with three heuristic algorithms: \textbf{Genetic Algorithm}, \textbf{Hill Climbing}, and \textbf{Simulated Annealing}
+\item Compare the performance of these algorithms on provided competition datasets
 \end{itemize}
 
-Highlighting important boxes helps a lot, but do not overdo the highlighting --- if all boxes are highlighted, not a single one will actually stand out.
+% Highlighting important boxes helps a lot, but do not overdo the highlighting --- if all boxes are highlighted, not a single one will actually stand out.
 \end{posterbox}
 
-\begin{posterbox}[column=0, name=something1, below=goals]{Some extra boxes}
-This box may contain an overview of the used methods, mathematics, program structure, etc.
-
-Include a picture, because pictures are better. Thesis defense takes less than 10 minutes, no one can read a wall of text in that short time. (For comparison, the usual realistic poster visit on a conference takes 15 seconds, unless the poster manages to catch the attention in that short time.)
-
-\tikzstyle{rec}=[rectangle, draw, rounded corners=1ex, font=\huge\bfseries]
-\begin{center}\begin{tikzpicture}[ultra thick, inner sep=1ex]
-\node[rec] (a) {Keep};
-\node[rec, circle, right=of a] (b) {it};
-\node[rec, right=of b] (c) {simple};
-\node[rec, densely dotted, below=6cm of c, font=\small] (notice) {\dots{}but precise!};
-\draw[->] (a) to (b);
-\draw[->] (b) to (c);
-\draw[dotted] (notice) to (c);
-\end{tikzpicture}\end{center}
-
-\end{posterbox}
-
-\begin{posterbox}[column=0, name=something2, below=something1, headerColorOne=yellow!80!orange!95!black, boxColorOne=yellow!33]{Golden rule of posters}
-For each $p \in P$ where $P$ is a set of posters:
-$$ \textsc{Success}(p) = \frac{\textsc{Clarity}(p)}{\textsc{TimeToViewerAttention}(p)} $$
+\begin{posterbox}[column=0, name=something1, below=goals]{Traffic Light Schedule for one Intersection}
+Each incoming street has two parameters: the \textbf{order} in which it gets a green light, and the \textbf{duration} of the green light.
+\begin{center}
+\includegraphics[width=1.0\linewidth]{img/figure2-abc.png}
+\includegraphics[width=1.0\linewidth]{img/figure2-def.png}
+\small{Example of a schedule {[Google Hash Code 2021]}. \\
+First, a-street has a green light for 2 seconds, then b-street for 3 seconds. \\
+One car can pass each second.}
+\end{center}
 \end{posterbox}
 
 %
 % FOOTER
 %
-
-\begin{posterbox}[column=0, span=2, name=footer, below=something2,
+\begin{posterbox}[column=0, span=2, name=footer, below=something1,
 	textborder=none, headerborder=none, boxheaderheight=0pt,
 	boxColorOne=black!3]{}
-If some institute/grant/department sponsored the work, put an acknowledgement here.
+\vspace{-1.5ex}
+\qrcode[height=1.5cm]{https://github.com/davidruda/Traffic-Signal-Optimization} 
+\hspace{0.5ex} \url{github.com/davidruda/Traffic-Signal-Optimization}
+% \fancyqr[image=\scalebox{1.2}{\faGithub}, image padding=1,color=black!90!gray]{https://github.com/davidruda/Traffic-Signal-Optimization}
 \end{posterbox}
 
 %
@@ -163,25 +179,61 @@ If some institute/grant/department sponsored the work, put an acknowledgement he
 % with measurements are perfect, tables are also good.
 %
 
-\begin{posterbox}[column=1, name=result1]{Result: SomePlots are Good}
-\begin{center}
-\includegraphics[width=0.7\linewidth]{img/ukazka-obr02.pdf}
-\end{center}
+\begin{posterbox}[column=1, name=something2, headerColorOne=yellow!80!orange!95!black, boxColorOne=yellow!33]
+{Score}
+The total score of the schedules $\bm{\theta}$ is defined as
+\begin{equation*}
+    SCORE(\bm{\theta}) = \sum_{c \in C}
+	    \begin{cases}
+        \mathrm{F} + (\mathrm{D} - t(c; \bm{\theta})), & \text{if $t(c; \bm{\theta}) \leq \mathrm{D}$}, \\
+        0, & \text{otherwise},
+    \end{cases}
+\end{equation*}
+i.e., cars arriving before or at the simulation end get the bonus plus extra points for arriving early; cars arriving later get zero. \\
 
-You may want to choose a single picture and make it stand out of the poster, so that it communicates the main result of your thesis as clearly as possible.
+$\mathrm{D}$ - simulation duration \\
+$\mathrm{F}$ - fixed bonus for reaching the destination \\
+$t(c; \bm{\theta})$ - arrival time of car $c$
+
 \end{posterbox}
 
-\begin{posterbox}[column=1, name=result2, below=result1]{Result: TableData are OK too}
+\begin{posterbox}[column=1, name=result1, below=something2]{Optimization Process}
+\begin{minipage}{0.5\linewidth}
+    \centering
+    \includegraphics[width=1.\linewidth]{img/c_Genetic_Algorithm_Hill_Climbing_Simulated_Annealing.pdf}
+    % \caption*{Caption for image 1}
+\end{minipage}\hfill
+\begin{minipage}{0.5\linewidth}
+    \centering
+    \includegraphics[width=1.\linewidth]{img/e_Genetic_Algorithm_Hill_Climbing_Simulated_Annealing.pdf}
+    % \caption*{Caption for image 2}
+\end{minipage}
 \begin{center}
-\begin{tabular}{lrr}
- & \textbf{SomeProgram} & \textbf{ThisThesis} \\
-\hline
-Process A & 50\% & 58\% \\
-Time for A & 35 days & \textcolor{green!80!black}{35 seconds} \\
-Process B & \textcolor{red}{15\%} & 55\% \\
-Time for B & 1 day & 8 hours \\
-Price & 66.6 EUR & free
-\end{tabular}
+{\small Convergence of optimization algorithms on datasets C and E. \\
+All algorithms have a fixed budget of simulation evaluations.}
+\end{center}
+\end{posterbox}
+
+\begin{posterbox}[column=1, name=result2, below=result1]{Results}
+\begin{center}
+
+% AVERAGE SCORE OUT OF 10 SEEDS (NORMALIZED SCORE)
+\begin{tabular}{lrrrr}
+% \toprule
+% Dataset & \textcolor{myblue}{\textbf{GA} (norm)} & \textcolor{myorange}{\textbf{HC} (norm)} & \textcolor{mygreen}{\textbf{SA} (norm)} \\
+Dataset & \textbf{\# Params} & \textbf{\textcolor{myblue}{\shortstack{Genetic \\ Algorithm}}} & \textbf{\textcolor{myorange}{\shortstack{Hill \\ Climbing}}} & \textbf{\textcolor{mygreen}{\shortstack{Simulated \\ Annealing}}} \\
+\midrule
+\textbf{B} & 5,974 & 0.91 & 0.87 & \textbf{0.97} \\
+\textbf{C} & 14,008 & 0.94 & 0.93 & \textbf{1.01\rlap{\textsuperscript{*}}} \\
+\textbf{D} & 167,748 & 0.90 & \textbf{0.92} & 0.92 \\
+\textbf{E} & 1,386 & 0.88 & 0.87 & \textbf{1.01\rlap{\textsuperscript{*}}} \\
+\textbf{F} & 10,002 & 0.93 & 0.93 & \textbf{0.94} \\
+\bottomrule
+\end{tabular} \\
+{\small The scores are averaged over 10 seeds and normalized: \\
+0.00 - our baseline, 1.00 - maximum known score \\
+\textit{\textbf{\textsuperscript{*}}New maximum known score}}
+
 \end{center}
 \end{posterbox}
 
@@ -189,22 +241,25 @@ Price & 66.6 EUR & free
 \large\bfseries
 \vspace{1ex}
 \begin{center}
-Program ThesisProgram solves the problem better than OtherProgram if X, and faster if Y.
+	\textcolor{mygreen}{Simulated Annealing} consistently outperforms the other methods, setting new maximum known scores on datasets C and E. \\
 \end{center}
-\vspace{.5ex}
+% \vspace{.25ex}
 \end{posterbox}
 
-\begin{posterbox}[column=1, name=conclusion, below=result3, bottomaligned=something2]{Conclusions}
+\begin{posterbox}[column=1, name=conclusion, below=result3,
+	% bottomaligned=something2
+]{Conclusions}
 \begin{itemize}
-\item explain the value of your result to others
-\item point out any applications
-\item if the program is online/opensource/on github, you may highlight it here
+\item All three algorithms achieved good results across all datasets
+\item Genetic Algorithm's broad search is less beneficial for this particular problem
+\item Single-state methods like Simulated Annealing seem more suitable
 \end{itemize}
+\vspace{-1ex}
 Possible future work:
 \begin{itemize}
-\item say what could be improved
-\item point out any interesting new opened problems that would be worth investigating
-\item include long-term goals
+\item Compare methods under equal runtime budget, not only by equal simulation evaluations
+\item Test other single-state methods (Tabu Search, Iterated Local Search)
+% \item include long-term goals
 \end{itemize}
 \end{posterbox}
 
