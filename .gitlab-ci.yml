@@ -11,3 +11,16 @@ thesis_pdf:
             - thesis/abstract-cs.pdf
             - thesis/abstract-en.pdf
         expire_in: 7 days
+
+
+poster_pdf:
+    image: aergus/latex
+    allow_failure: true
+    before_script:
+        - cd poster
+    script:
+        - make all
+    artifacts:
+        paths:
+            - poster/poster.pdf
+        expire_in: 7 days
