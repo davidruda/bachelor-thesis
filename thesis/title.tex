@@ -4,12 +4,14 @@
 
 % We usually do not typeset the hard cover, but if you want to do it, change \iffalse to \iftrue
 \iffalse
+% \iftrue
 
 \pagestyle{empty}
 \hypersetup{pageanchor=false}
 \begin{center}
 
-\large
+% \large
+\LARGE
 Charles University
 
 \medskip
@@ -18,16 +20,22 @@ Faculty of Mathematics and Physics
 
 \vfill
 
-{\huge\bf\ThesisTypeTitle}
+\includegraphics[width=60mm]{img/logo-en_edited.pdf}
 
 \vfill
+
+{\huge\bf\ThesisTypeTitle}
+
+% \vfill
+\vspace{\stretch{0.5}}
 
 {\huge\bf\ThesisTitle\par}
 
 \vfill
 \vfill
 
-\hbox to \hsize{\YearSubmitted\hfil \ThesisAuthor}
+% \hbox to \hsize{\YearSubmitted\hfil \ThesisAuthor}
+\hbox to \hsize{{\LARGE \YearSubmitted\hfil \ThesisAuthor}}
 
 \end{center}
 
