@@ -1,0 +1,89 @@
+name: Build PDFs, Verify PDF/A, and Upload to GitHub Pages
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  thesis_pdf:
+    runs-on: ubuntu-latest
+    container:
+      image: aergus/latex
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build thesis PDFs
+        working-directory: thesis
+        run: make all && mv *.pdf ..
+
+      - name: Upload thesis PDFs
+        uses: actions/upload-artifact@v6
+        with:
+          name: thesis-pdf
+          path: |
+            thesis.pdf
+            abstract-cs.pdf
+            abstract-en.pdf
+          retention-days: 7
+
+
+  poster_pdf:
+    runs-on: ubuntu-latest
+    container:
+      image: aergus/latex
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build poster PDF
+        working-directory: poster
+        run: make all && mv poster.pdf ..
+
+      - name: Upload poster PDF
+        uses: actions/upload-artifact@v6
+        with:
+          name: poster-pdf
+          path: poster.pdf
+          retention-days: 7
+
+
+  upload_gh_pages:
+    runs-on: ubuntu-latest
+    needs: [thesis_pdf, poster_pdf]
+    steps:
+      - name: Download thesis PDFs
+        uses: actions/download-artifact@v6
+        with:
+          name: thesis-pdf
+          path: .
+
+      - name: Download poster PDF
+        uses: actions/download-artifact@v6
+        with:
+          name: poster-pdf
+          path: .
+
+      - name: Publish PDFs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          force_orphan: true
+
+
+  verify_pdfa:
+    runs-on: ubuntu-latest
+    needs: thesis_pdf
+    container:
+      image: ghcr.io/mff-cuni-cz/cuni-thesis-validator
+    steps:
+      - name: Download thesis PDFs
+        uses: actions/download-artifact@v6
+        with:
+          name: thesis-pdf
+          path: .
+
+      - name: Verify PDF/A
+        run: |
+          verify *.pdf | tee /dev/stderr | grep -qE 'nonCompliant="0" failedJobs="0"'
