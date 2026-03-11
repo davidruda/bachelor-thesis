@@ -15,25 +15,25 @@ We then integrate this simulator into an optimization pipeline with three heuris
 <table align="center">
   <tr>
     <td align="center">
-      <a href="https://github.com/davidruda/bachelor-thesis/blob/gh-pages/thesis.pdf">
+      <a href="https://davidruda.github.io/bachelor-thesis/thesis.pdf">
 <!--
 convert -density 600 thesis/thesis.pdf[0] -resize 20% -alpha remove assets/thesis-small.jpg
 -->
         <img src="assets/thesis-small.jpg" width="300" alt="Thesis">
       </a>
       <br>
-      <a href="https://github.com/davidruda/bachelor-thesis/blob/gh-pages/thesis.pdf"><big>Thesis</big></a>
+      <a href="https://davidruda.github.io/bachelor-thesis/thesis.pdf"><big>Thesis</big></a>
     </td>
     <td align="center" width="50"></td> <!-- spacing between images -->
     <td align="center">
-      <a href="https://github.com/davidruda/bachelor-thesis/blob/gh-pages/poster.pdf">
+      <a href="https://davidruda.github.io/bachelor-thesis/poster.pdf">
 <!--
 convert -density 300 poster/poster.pdf -resize 10% assets/poster-small.jpg
 -->
         <img src="assets/poster-small.jpg" width="300" alt="Poster">
       </a>
       <br>
-      <a href="https://github.com/davidruda/bachelor-thesis/blob/gh-pages/poster.pdf"><big>Poster</big></a>
+      <a href="https://davidruda.github.io/bachelor-thesis/poster.pdf"><big>Poster</big></a>
     </td>
   </tr>
 </table>
